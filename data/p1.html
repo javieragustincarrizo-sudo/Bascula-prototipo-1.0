@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Esqueleto - Bootstrap 5.3</title>
+    <!-- Bootstrap 5.3 CSS CDN -->
+   <link rel="stylesheet" href="/assets/bootstrap.min.css">
+   <link rel="stylesheet" href="/assets/style.css">
+   <link rel="icon" type="image/x-icon" href="/assets/balanza.png">
+    <style>
+        /* Estilos estructurales para fijar el Topbar y Sidebar */
+        body {
+            height: 100vh;
+            overflow: hidden;
+        }
+        .main-wrapper {
+            display: flex;
+            height: calc(100vh - 56px); /* Resta la altura del topbar */
+        }
+        .sidebar {
+            width: 250px;
+            min-width: 250px;
+            overflow-y: auto;
+        }
+        .content-body {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. TOPBAR (Barra de navegación superior) -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="bi bi-bootstrap-fill text-primary me-2"></i>Mi Panel
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topbarNav" aria-controls="topbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="topbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="bi bi-bell-fill"></i></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Usuario
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-menu-item dropdown-item" href="#">Perfil</a></li>
+                            <li><a class="dropdown-menu-item dropdown-item" href="#">Configuración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-menu-item dropdown-item text-danger" href="#">Cerrar sesión</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenedor principal de la parte inferior -->
+    <div class="main-wrapper">
+
+        <!-- 2. SIDEBAR (Barra de navegación lateral) -->
+        <div class="sidebar bg-body-tertiary border-end p-3 d-flex flex-column justify-content-between">
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link active" aria-current="page">
+                        <i class="bi bi-house-door me-2"></i> Inicio
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link text-body">
+                        <i class="bi bi-graph-up me-2"></i> Estadísticas
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link text-body">
+                        <i class="bi bi-folder me-2"></i> Proyectos
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link text-body">
+                        <i class="bi bi-gear me-2"></i> Ajustes
+                    </a>
+                </li>
+            </ul>
+            <div class="border-top pt-3">
+                <span class="text-muted small">© 2026 Tu Empresa</span>
+            </div>
+        </div>
+
+        <!-- 3. BODY (Espacio para el contenido dinámico) -->
+        <div class="content-body p-4">
+            <div class="container-fluid">
+                <!-- Encabezado del contenido -->
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Dashboard Principal</h1>
+                </div>
+
+                <!-- Zona libre para tu contenido -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card p-4">
+                            <h5>¡Bienvenido de nuevo!</h5>
+                            <p class="text-body-secondary">Este es tu contenedor listo para poner el contenido dinámico de tu aplicación.</p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap 5.3 JavaScript Bundle con Popper -->
+<script src="/assets/bootstrap.bundle.min.js"></script>
+<script src="/assets/script.js"></script>
+</body>
+</html>

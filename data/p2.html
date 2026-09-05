@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Desplazable - Bootstrap 5.3</title>
+    <!-- Bootstrap 5.3 CSS CDN -->
+   <link rel="stylesheet" href="/assets/bootstrap.min.css">
+   <link rel="stylesheet" href="/assets/style.css">
+   <link rel="icon" type="image/x-icon" href="/assets/balanza.png">
+    <style>
+        body {
+            height: 100vh;
+            overflow: hidden;
+        }
+        .main-wrapper {
+            display: flex;
+            height: calc(100vh - 56px); /* Resta la altura del topbar */
+            width: 100%;
+        }
+        .content-body {
+            flex-grow: 1;
+            overflow-y: auto;
+            width: 100%;
+        }
+        
+        /* Ajustes estructurales para lograr el desplazamiento nativo */
+        @media (min-width: 992px) {
+            .sidebar-offcanvas {
+                transform: none !important;
+                visibility: visible !important;
+                width: 250px !important;
+                position: relative !important;
+                height: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. TOPBAR -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+        <div class="container-fluid">
+            <!-- Botón para abrir/cerrar el sidebar (visible en pantallas móviles/medianas) -->
+            <button class="btn btn-outline-secondary me-2 d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <a class="navbar-brand fw-bold me-auto" href="#">
+                <i class="bi bi-bootstrap-fill text-primary me-2"></i>Mi Panel
+            </a>
+
+            <div class="d-flex align-items-center">
+                <ul class="navbar-nav mb-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Usuario
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Perfil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#">Cerrar sesión</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenedor principal -->
+    <div class="main-wrapper">
+
+        <!-- 2. SIDEBAR (Usando Offcanvas con responsive breakpoints) -->
+        <!-- data-bs-scroll="true" permite interactuar con el main, data-bs-backdrop="false" evita la capa oscura superpuesta -->
+        <div class="offcanvas-lg offcanvas-start sidebar-offcanvas bg-body-tertiary border-end p-3 d-flex flex-column justify-content-between" 
+             tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel" data-bs-scroll="true" data-bs-backdrop="false">
+            
+            <div class="offcanvas-header d-lg-none px-0 pt-0">
+                <h5 class="offcanvas-title fw-bold" id="sidebarMenuLabel">Menú</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
+            </div>
+
+            <div class="offcanvas-body flex-column p-0 w-100">
+                <ul class="nav nav-pills flex-column mb-auto w-100">
+                    <li class="nav-item mb-2">
+                        <a href="#" class="nav-link active" aria-current="page">
+                            <i class="bi bi-house-door me-2"></i> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="#" class="nav-link text-body">
+                            <i class="bi bi-graph-up me-2"></i> Estadísticas
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="#" class="nav-link text-body">
+                            <i class="bi bi-folder me-2"></i> Proyectos
+                        </a>
+                    </li>
+                </ul>
+                <div class="border-top pt-3 mt-3">
+                    <span class="text-muted small">© 2026 Tu Empresa</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. BODY (Contenido Principal) -->
+        <div class="content-body p-4">
+            <div class="container-fluid">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Dashboard Con Desplazamiento</h1>
+                </div>
+
+                <div class="row bg-danger">
+                    <div class="col-md-12">
+
+                        <div class="card p-4">
+                            <h5>Comportamiento corregido</h5>
+                            <p class="text-body-secondary">Ahora, al abrirse en pantallas más compactas, el sidebar empuja el contenido principal en lugar de taparlo directamente, gracias a las directivas <code>data-bs-scroll="true"</code> y el manejo de rejilla adaptada.</p>
+                        </div>
+
+                        <div class="card p-4">
+                            <h5>Comportamiento corregido</h5>
+                            <p class="text-body-secondary">Ahora, al abrirse en pantallas más compactas, el sidebar empuja el contenido principal en lugar de taparlo directamente, gracias a las directivas <code>data-bs-scroll="true"</code> y el manejo de rejilla adaptada.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row bg-info">
+                    <div class="col-md-12">
+
+                        <div class="card p-4">
+                            <h5>Comportamiento corregido</h5>
+                            <p class="text-body-secondary">Ahora, al abrirse en pantallas más compactas, el sidebar empuja el contenido principal en lugar de taparlo directamente, gracias a las directivas <code>data-bs-scroll="true"</code> y el manejo de rejilla adaptada.</p>
+                        </div>
+                        
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/assets/bootstrap.bundle.min.js"></script>
+    <script src="/assets/script.js"></script>
+</body>
+</html>

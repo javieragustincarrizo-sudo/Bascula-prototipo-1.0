@@ -1,0 +1,276 @@
+
+        body { background-color: #f8f9fa; overflow-x: hidden; }
+        .sidebar { height: 100vh; width: 240px; position: fixed; top: 0; left: 0; background-color: #343a40; color: #fff; z-index: 1000; }
+        .sidebar .nav-link { color: #c2c7d0; transition: all 0.2s; }
+        .sidebar .nav-link:hover { color: #fff; background-color: rgba(255,255,255,0.1); }
+        .sidebar .nav-link.active { color: #fff; background-color: #007bff; font-weight: bold; }
+        .main-content { margin-left: 240px; padding: 20px; min-height: 100vh; }
+        .card { border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .medicion-val { font-size: 3.5rem; font-weight: 700; color: #28a745; }
+ 
+        @media (max-width: 768px) {
+            .sidebar { width: 100%; height: auto; position: relative; }
+            .main-content { margin-left: 0; }
+        }
+
+        #qrcode img {
+            margin: 0 auto;
+            border: 10px solid white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        } 
+
+        /* Contenedor del Switch Personalizado */
+        .custom-switch-premium {
+            position: relative;
+            display: inline-block;
+            width: 90px;
+            height: 46px;
+        }
+
+        /* Ocultar el checkbox real */
+        .custom-switch-premium input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* El cuerpo del Switch (Fondo Desactivado) */
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #2e2e3a;
+            border-radius: 34px;
+            transition: .3s;
+        }
+
+        /* Icono 'X' cuando está desactivado */
+        .switch-slider::before {
+            content: "✕";
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #494958;
+            font-size: 20px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+        }
+
+        /* La perilla circular blanca */
+        .switch-slider::after {
+            content: "";
+            position: absolute;
+            height: 38px;
+            width: 38px;
+            left: 4px;
+            bottom: 4px;
+            background-color: #e2e2e9;
+            border-radius: 50%;
+            transition: .3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        /* Fondo Verde cuando está Activado */
+        .custom-switch-premium input:checked + .switch-slider {
+            background-color: #00c853;
+        }
+
+        /* Icono '✓' y cambio de posición cuando está activado */
+        .custom-switch-premium input:checked + .switch-slider::before {
+            content: "✓";
+            color: #ffffff;
+            left: 18px;
+            right: auto;
+        }
+
+        /* Mover la perilla a la derecha */
+        .custom-switch-premium input:checked + .switch-slider::after {
+            transform: translateX(44px);
+        }
+        /* Contenedor del Switch Personalizado */
+        .custom-switch-premium {
+            position: relative;
+            display: inline-block;
+            width: 90px;
+            height: 46px;
+        }
+
+        /* Ocultar el checkbox real */
+        .custom-switch-premium input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* El cuerpo del Switch (Fondo Desactivado) */
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #2e2e3a;
+            border-radius: 34px;
+            transition: .3s;
+        }
+
+        /* Icono 'X' cuando está desactivado */
+        .switch-slider::before {
+            content: "✕";
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #494958;
+            font-size: 20px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+        }
+
+        /* La perilla circular blanca */
+        .switch-slider::after {
+            content: "";
+            position: absolute;
+            height: 38px;
+            width: 38px;
+            left: 4px;
+            bottom: 4px;
+            background-color: #e2e2e9;
+            border-radius: 50%;
+            transition: .3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        /* Fondo Verde cuando está Activado */
+        .custom-switch-premium input:checked + .switch-slider {
+            background-color: #00c853;
+        }
+
+        /* Icono '✓' y cambio de posición cuando está activado */
+        .custom-switch-premium input:checked + .switch-slider::before {
+            content: "✓";
+            color: #ffffff;
+            left: 18px;
+            right: auto;
+        }
+
+        /* Mover la perilla a la derecha */
+        .custom-switch-premium input:checked + .switch-slider::after {
+            transform: translateX(44px);
+        }
+        /* --- DISEÑO DE BARRAS DE SEÑAL RESPONSIVE --- */
+        .signal-widget {
+            display: inline-flex;
+            align-items: flex-end; /* Alinea las barras con la base del texto */
+            height: 20px;
+        }
+
+        .signal-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;             /* Separación entre barritas */
+            width: 24px;          /* Ancho total del contenedor de barras */
+            height: 16px;         /* Altura de la barra más alta */
+        }
+
+        .signal-bars .bar {
+            flex: 1;
+            background-color: #e0e0e0; /* Color gris para barras apagadas */
+            border-radius: 1px;
+            transition: background-color 0.3s ease, height 0.3s ease;
+        }
+
+        /* Alturas progresivas para simular escala de señal */
+        .signal-bars .bar-1 { height: 25%; }
+        .signal-bars .bar-2 { height: 50%; }
+        .signal-bars .bar-3 { height: 75%; }
+        .signal-bars .bar-4 { height: 100%; }
+
+        /* Color verde cuando la barra está activa/encendida */
+        .signal-bars .bar.active {
+            background-color: #28a745;
+        }
+
+        /* --- AJUSTES DE FLEXIBILIDAD EN COMPONENTES --- */
+        .gap-3 {
+            gap: 1rem !important;
+        }
+
+        /* Solución para Bootstrap 4 que carece de clases nativas de margen derecho en elementos flex */
+        .mr-2 { margin-right: 0.5rem !important; }
+        .mr-3 { margin-right: 1rem !important; }
+
+        /* --- CONTENEDOR E ICONO DE BATERÍA ESTILO OLED --- */
+        .bateria-oled-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 14px;
+            height: 22px;
+        }
+
+        /* El borne positivo de arriba */
+        .bateria-borne {
+            width: 4px;
+            height: 2px;
+            background-color: #212529; /* Negro oscuro */
+            border-radius: 1px 1px 0 0;
+        }
+
+        /* El cuerpo principal que contiene las líneas */
+        .bateria-cuerpo {
+            width: 14px;
+            height: 20px;
+            border: 2px solid #212529; /* Contorno de la batería */
+            border-radius: 2px;
+            padding: 1px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: #ffffff; /* Fondo blanco */
+        }
+
+        /* Los 5 segmentos de carga internos */
+        .bat-segmento {
+            width: 100%;
+            height: 2px;
+            background-color: transparent; /* Por defecto apagados (vacíos) */
+            transition: background-color 0.2s ease;
+        }
+
+        /* Clase para encender los segmentos cuando hay carga */
+        .bat-segmento.active {
+            background-color: #212529; /* Se pinta en negro */
+        }
+
+        /* --- SEGMENTOS DE BATERÍA DINÁMICOS --- */
+        #bateria-icono div.active.bat-verde {
+            background-color: #28a745 !important; /* Verde */
+        }
+
+        #bateria-icono div.active.bat-amarillo {
+            background-color: #ffc107 !important; /* Amarillo */
+        }
+
+        #bateria-icono div.active.bat-rojo {
+            background-color: #dc3545 !important; /* Rojo Alerta */
+        }
+
+        /* --- ESTILO EDIT LABEL PARA EL NOMBRE DEL ESCLAVO --- */
+        /* --- ESTILO EDIT LABEL CON MAYOR CONTRASTE --- */
+        .btn-edit-label {
+            background-color: #fcfcfc !important; /* Un sutil fondo grisáceo */
+            border: 1px dashed #adb5bd !important; /* Gris intermedio (Bootstrap 5), mucho más visible */
+            border-radius: 4px;
+            padding: 2px 8px !important;
+            color: #212529 !important; /* Fuerza el texto a negro oscuro */
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Al pasar el mouse por encima */
+        .btn-edit-label:hover:not([disabled]) {
+            background-color: #f1f3f5 !important;
+            border-color: #0d6efd !important; /* Azul eléctrico */
+            color: #0d6efd !important;
+            text-decoration: none !important;
+        }
+

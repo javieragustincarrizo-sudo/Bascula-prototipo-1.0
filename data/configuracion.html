@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración báscula</title>
+    <link rel="stylesheet" href="/assets/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="icon" type="image/x-icon" href="/assets/balanza.png">
+</head>
+<body>
+
+    <!-- Menú Lateral (Sidebar) -->
+    <aside class="sidebar">
+        <nav class="nav flex-column">
+            <a href="/index.html" class="nav-link"><i class="bi bi-speedometer2"></i> Báscula</a>
+            <a href="/configuracion.html" class="nav-link active"><i class="bi bi-wifi"></i> Configuración</a>
+        </nav>
+    </aside>
+
+    <!-- Barra Superior -->
+    <header class="top-info-bar shadow-sm">
+      <div class="container-fluid">
+        <div class="row w-100 align-items-center m-0 py-2">
+          
+            <!-- Columna Izquierda: Espacio libre o Titulo corto si lo deseas (Ocupa la mitad del ancho) -->
+            <div class="col-4 col-md-6 p-0">
+               <!-- Puedes dejarlo vacío o agregar un logo/texto corto aquí -->
+            </div>
+          
+            <!-- Columna Derecha: Bloque Unificado de Información en el Header (Actualizado) -->
+            <div class="col-8 col-md-6 p-0 d-flex justify-content-end align-items-center gap-3">
+                  
+                  <!-- 1. Modo del Equipo e Info de Red Coherente -->
+                  <div class="d-flex flex-column text-right mr-3 small font-weight-bold" style="line-height: 1.2;">
+                      <div>Modo: <span id="modo" class="text-primary">--</span></div>
+                      <div id="info-red-header" class="text-muted" style="font-size: 0.75rem;">
+                        Conectado a: <span id="red-nombre">--</span>
+                        <span id="ip-header" class="font-family-monospace text-primary">0.0.0.0</span>
+                      </div>
+                  </div>
+
+                  <!-- 2. Widget de Batería Estilo OLED -->
+                  <div class="d-flex align-items-center mr-3" id="bateria-widget" title="Batería del dispositivo">
+                      <span id="bateria-porcentaje" class="small font-weight-bold">--%</span>
+                        <div id="bateria-icono" class="ml-1 position-relative d-flex align-items-center" style="width: 25px; height: 14px; border: 1.5px solid #6c757d; border-radius: 2px; padding: 1px; gap: 1px;">
+                            <div id="bat-bar-1" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
+                            <div id="bat-bar-2" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
+                            <div id="bat-bar-3" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
+                            <div id="bat-bar-4" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
+                            <div id="bat-bar-5" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
+                            <!-- Pestaña física externa de la pila -->
+                            <div style="position: absolute; right: -3px; top: 3px; width: 1.5px; height: 5px; background: #6c757d; border-radius: 0 1px 1px 0;"></div>
+                        </div>
+                  </div>
+
+                  <!-- 3. Widgets de Señal de 4 barras -->
+                  <div class="signal-widget d-flex align-items-center mr-3" title="Intensidad de Señal Wi-Fi">
+                      <div id="signal-bars" class="signal-bars mr-2">
+                          <div id="wifi-bar-1" class="bar bar-1"></div>
+                          <div id="wifi-bar-2" class="bar bar-2"></div>
+                          <div id="wifi-bar-3" class="bar bar-3"></div>
+                          <div id="wifi-bar-4" class="bar bar-4"></div>
+                      </div>
+                      <span id="wifi-texto-rssi" class="label small font-weight-bold text-muted">Señal</span>
+                  </div>
+                  
+                  <!-- 4. Estado del Sistema -->
+                  <span id="sistema" class="badge rounded-pill bg-secondary px-3 py-2">Estado</span>
+            </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Contenido Principal dentro de configuracion.html -->
+    <main class="main-content">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Configuración del Sistema</h1>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card p-4 bg-white">
+                    <form action="/guardar-config" method="POST">
+                        
+                        <!-- SECTOR 1: ROL DEL DISPOSITIVO -->
+                        <h4 class="mb-3 font-weight-bold">Rol en la Red de Básculas</h4>
+                        <p class="text-muted small">Define si este nodo recolecta datos (Maestro) o si solo transmite su peso (Esclavo).</p>
+                        
+                        <div class="form-group my-4 text-center">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span class="mr-3 font-weight-bold h5 text-muted" id="text-esclavo">Esclavo</span>
+                                <label class="custom-switch-premium">
+                                    <input type="checkbox" id="switchModo" name="modo_maestro" onchange="actualizarInterfazConfig()">
+                                    <span class="switch-slider"></span>
+                                </label>
+                                <span class="ml-3 font-weight-bold h5 text-muted" id="text-maestro">Maestro</span>
+                            </div>
+                        </div>
+
+                        <!-- SECTOR 2: TIPO DE RED (Solo visible si es Maestro) -->
+                        <div id="sector-tipo-red" class="my-4" style="display: none;">
+                            <hr class="my-4">
+                            <h4 class="mb-3 font-weight-bold">Modo de Red Wi-Fi</h4>
+                            <div class="form-group">
+                                <label for="tipo_red" class="font-weight-bold text-secondary small">¿Cómo operará el Wi-Fi del Maestro?</label>
+                                <select class="form-control" id="tipo_red" name="tipo_red" onchange="actualizarInterfazConfig()">
+                                    <option value="router" selected>Conectarse a Red Existente (Router)</option>
+                                    <option value="ap">Crear Red Propia (Punto de Acceso Local)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="nombre_local_disp" class="font-weight-bold text-dark h6">
+                                <i class="bi bi-tag-fill text-primary"></i> Nombre Amistoso de esta Báscula
+                            </label>
+                            <input type="text" class="form-control form-control-lg" id="nombre_local_disp" name="nombre_local_disp" placeholder="Ej: Celda acrilico, Balanza Piso 1..." maxlength="20" required>
+                            <small class="text-muted">Asigna un nombre único para identificar este equipo fácilmente en la red.</small>
+                        </div>
+
+                        <!-- SECTOR 3: CREDENCIALES WI-FI (Dinámico) -->
+                        <!-- SECTOR MULTI-WIFI REESTRUCTURADO -->
+                        <div id="sector-credenciales" style="display: none;">
+                            
+                            <!-- 1. Contenedor de Redes Memorizadas en Flash -->
+                            <div class="card bg-light border-secondary p-3 mb-4 shadow-sm">
+                                <h6 class="font-weight-bold text-secondary mb-3">
+                                    <i class="bi bi-list-stars text-primary"></i> Redes Wi-Fi Memorizadas (Máx 4)
+                                </h6>
+                                <!-- Aquí el script inyectará las filas de redes con su botón Eliminar -->
+                                <ul class="list-group" id="lista-redes-wifi-flash">
+                                    <li class="list-group-item text-center text-muted small py-3">Cargando redes desde el dispositivo...</li>
+                                </ul>
+                            </div>
+
+                            <!-- 2. Formulario para Agregar una Nueva Red -->
+                            <div class="card p-3 border shadow-sm">
+                                <h6 class="font-weight-bold text-dark mb-3">
+                                    <i class="bi bi-plus-circle-fill text-success"></i> Registrar Nueva Red de Respaldo
+                                </h6>
+                                <div class="form-group mb-3">
+                                    <label for="nuevo-ssid" class="font-weight-bold small text-secondary">Nombre de la Red (SSID)</label>
+                                    <input type="text" class="form-control" id="nuevo-ssid" placeholder="Ej: Red_Planta_B">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="nuevo-password" class="font-weight-bold small text-secondary">Contraseña (WPA/WPA2)</label>
+                                    <input type="password" class="form-control" id="nuevo-password" placeholder="Mínimo 8 caracteres">
+                                </div>
+                                <button type="button" onclick="procesarAgregarRedWiFi()" class="btn btn-success btn-block font-weight-bold py-2 shadow-sm">
+                                    <i class="bi bi-save"></i> GUARDAR NUEVA RED WiFi
+                                </button>
+                            </div>
+
+                        </div>
+                        <!-- SECTOR SELECCIÓN DE MAESTRO CONCENTRADOR (Solo visible en Esclavos) -->
+                        <div id="sector-seleccion-maestro" style="display: none;" class="card border-primary p-3 mb-4 shadow-sm">
+                            <h6 class="font-weight-bold text-primary mb-3">
+                                <i class="bi bi-cpu-fill"></i> Enlace con Maestro Concentrador
+                            </h6>
+                            <p class="text-muted small">
+                                Selecciona el Maestro específico de este galpón al que debe responder esta celda. Si cambias de Maestro, la báscula ignorará las órdenes de los demás concentradores.
+                            </p>
+                            <div class="form-group mb-3">
+                                <label for="selector-maestro-nvs" class="font-weight-bold small text-secondary">Maestros Detectados en el Aire</label>
+                                <select class="form-control form-control-lg" id="selector-maestro-nvs" onchange="procesarFijarMaestroFlash()">
+                                    <option value="FF:FF:FF:FF:FF:FF">-- Broadcast Global (Cualquier Maestro) --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Botón Guardar -->
+                        <button type="submit" class="btn btn-success btn-block mt-4 py-2 font-weight-bold">
+                            <i class="bi bi-save"></i> Guardar y Reiniciar Dispositivo
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+
+    <!-- Scripts -->
+    <script src="/assets/bootstrap.bundle.min.js"></script>
+    <script src="/assets/qrcode.min.js"></script>
+    <script src="/assets/script.js"></script>
+
+</body>
+</html>
+

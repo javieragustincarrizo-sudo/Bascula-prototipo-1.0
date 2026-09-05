@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Báscula - Panel de Control</title>
+   <link rel="stylesheet" href="/assets/bootstrap.min.css">
+   <link rel="stylesheet" href="/assets/style.css">
+   <link rel="icon" type="image/x-icon" href="/assets/balanza.png">
+</head>
+<body>
+   <!-- Menú Lateral (Sidebar) -->
+   <aside class="sidebar">
+       <nav class="nav flex-column">
+           <a href="/index.html" class="nav-link active"><i class="bi bi-speedometer2"></i> Panel</a>
+           <a href="/configuracion.html" onclick="verificarAccesoConfig()" class="nav-link"><i class="bi bi-wifi"></i> Configuración</a>
+       </nav>
+   </aside>
+
+   <!-- Barra Superior -->
+   <header class="top-info-bar shadow-sm">
+       <div class="container-fluid">
+           <div class="row w-100 align-items-center m-0 py-2">
+               <div class="col-4 col-md-6 p-1"></div>
+               <div class="col-8 col-md-6 p-0 d-flex justify-content-end align-items-center gap-3">
+                   <!-- Modo e Info de Red -->
+                   <div class="d-flex flex-column text-right mr-3 small font-weight-bold" style="line-height: 1.2;">
+                       <div>Modo: <span id="modo" class="text-primary">Maestro</span></div>
+                       <div id="info-red-header" class="text-muted" style="font-size: 0.75rem;">
+                           Conectado a: <span id="red-nombre">--</span> (<span id="ip-header" class="font-family-monospace text-primary">0.0.0.0</span>)
+                       </div>
+                   </div>
+                   <!-- Widget de Batería -->
+                   <div class="d-flex align-items-center mr-3" id="bateria-widget" title="Batería del dispositivo">
+                       <span id="bateria-porcentaje" class="small font-weight-bold">--%</span>
+                       <div id="bateria-icono" class="ml-1 position-relative d-flex align-items-center" style="width: 25px; height: 14px; border: 1.5px solid #6c757d; border-radius: 2px; padding: 1px; gap: 1px;">
+                           <div id="bat-bar-1" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
+                           <div id="bat-bar-2" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
+                           <div id="bat-bar-3" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
+                           <div id="bat-bar-4" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
+                           <div id="bat-bar-5" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
+                           <div style="position: absolute; right: -3px; top: 3px; width: 1.5px; height: 5px; background: #6c757d; border-radius: 0 1px 1px 0;"></div>
+                       </div>
+                   </div>
+                   <!-- Widget de Señal Wi-Fi -->
+                   <div class="signal-widget d-flex align-items-center mr-3" title="Intensidad de Señal Wi-Fi">
+                       <div id="signal-bars" class="signal-bars mr-2">
+                           <div id="wifi-bar-1" class="bar bar-1"></div>
+                           <div id="wifi-bar-2" class="bar bar-2"></div>
+                           <div id="wifi-bar-3" class="bar bar-3"></div>
+                           <div id="wifi-bar-4" class="bar bar-4"></div>
+                       </div>
+                       <span id="wifi-texto-rssi" class="label small font-weight-bold text-muted">Señal</span>
+                   </div>
+                   <span id="sistema" class="badge rounded-pill bg-secondary px-3 py-2">Estado</span>
+               </div>
+           </div>
+       </div>
+   </header>
+
+   <!-- Contenido Principal -->
+   <main class="main-content">
+       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+           <h1 class="h2">Monitoreo de Red de Pesaje</h1>
+           <span class="badge badge-secondary p-2" id="indicador-rol">Rol: Cargando...</span>
+       </div>
+
+       <div class="row">
+           <!-- NUEVA ZONA: Peso Total e Indicadores Globales de Red -->
+           <div class="col-12 mb-4">
+               <div class="card bg-white p-4 shadow-sm">
+                   <div class="row align-items-center">
+                       <div class="col-md-6 text-center text-md-left">
+                           <h5 class="text-muted text-uppercase font-weight-bold m-0">PESO TOTAL DE LA RED</h5>
+                           <div class="medicion-val my-2" style="font-size: 5rem; font-weight: 800; color: #dc3545;">
+                               <span id="peso-total-red">0.00</span> <small class="text-muted" style="font-size: 2rem;">kg</small>
+                           </div>
+                           <small class="text-muted">Básculas activas en red: <span id="total-dispositivos" class="font-weight-bold text-dark">1</span></small>
+                       </div>
+                       <!-- Botonera Industrial para el Operario Final -->
+                       <div class="col-md-6 mt-3 mt-md-0">
+                           <div class="d-flex flex-column gap-3">
+                               <button onclick="ejecutarTaraGeneralWeb()" class="btn btn-danger btn-block font-weight-bold py-3 shadow-sm mb-2">
+                                   <i class="bi bi-arrow-counterclockwise"></i> TARA GENERAL (RED)
+                               </button>
+                               <button onclick="ejecutarCeroGeneralWeb()" class="btn btn-dark btn-block font-weight-bold py-3 shadow-sm">
+                                   <i class="bi bi-dash-circle"></i> PUESTA A CERO GLOBAL
+                               </button>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+
+       <!-- SECCIÓN: Grilla Unificada de todas las Básculas (Local + Esclavas) -->
+       <div class="mt-2">
+           <div class="d-flex justify-content-between align-items-center mb-3">
+               <h4 class="font-weight-bold text-secondary">Dispositivos y Celdas de Carga</h4>
+               <!-- Botón visible solo para Administradores -->
+               <button id="btn-adjuntar-dispositivo" class="btn btn-outline-success btn-sm style-admin-only" style="display: none;" data-toggle="modal" data-target="#modalAgregarEsclavo" data-bs-toggle="modal" data-bs-target="#modalAgregarEsclavo">
+                   <i class="bi bi-plus-circle"></i> Adjuntar Dispositivo
+               </button>
+           </div>
+
+           <!-- Grilla dinámica donde el script inyectará tanto la Local como las Esclavas -->
+           <div class="row" id="contenedor-todas-las-basculas">
+               <!-- Las tarjetas se armarán por JS aquí -->
+           </div>
+       </div>
+
+       <!-- Historial de incidentes (Admin-only) -->
+       <div id="panel-historial-alertas" class="col-12 mt-4 style-admin-only" style="display: none;">
+           <div class="card border-warning shadow-sm bg-white">
+               <div class="card-header bg-warning text-dark font-weight-bold d-flex justify-content-between align-items-center py-2">
+                   <span><i class="bi bi-exclamation-triangle-fill mr-1"></i> Historial de Sobrecargas de Red</span>
+                   <span class="badge bg-dark text-white small">Memoria Flash</span>
+               </div>
+               <div class="card-body p-2">
+                   <ul class="list-group list-group-flush font-family-monospace small" id="lista-logs-sobrecarga">
+                       <li class="list-group-item text-muted text-center py-2">Cargando bitácora de eventos...</li>
+                   </ul>
+               </div>
+           </div>
+       </div>
+   </main>
+
+   <!-- MODAL: Calibración Local -->
+   <div class="modal fade" id="modalCalibrarLocal" tabindex="-1" aria-hidden="true">
+       <div class="modal-dialog modal-dialog-centered">
+           <div class="modal-content">
+               <div class="modal-header">
+                   <h5 class="modal-title font-weight-bold">Calibración por Software (Local)</h5>
+                   <button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">
+                       <span aria-hidden="true">&times;</span>
+                   </button>
+               </div>
+               <div class="modal-body text-left">
+                   <p class="text-muted small"><strong>Instrucciones:</strong> Asegúrate de hacer TARA local antes. Pon una pesa patrón e ingresa el valor.</p>
+                   <div class="form-group mb-3">
+                       <label for="peso-patron" class="font-weight-bold text-secondary small">Peso de la Pesa Patrón (en kg)</label>
+                       <input type="number" step="0.01" class="form-control form-control-lg" id="peso-patron" placeholder="Ej: 5.00" required>
+                   </div>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-primary font-weight-bold" onclick="ejecutarCalibracionWeb()">Guardar Factor</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- MODAL: Agregar Esclavo -->
+  <div class="modal fade" id="modalAgregarEsclavo" tabindex="-1" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered">
+       <div class="modal-content">
+           <div class="modal-header">
+               <h5 class="modal-title font-weight-bold">Adjuntar Nueva Báscula</h5>
+               <button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+               </button>
+           </div>
+           <div class="modal-body text-left">
+               <div class="form-group mb-3">
+                   <label for="mac-esclavo" class="font-weight-bold text-secondary small">Dispositivos en el aire</label>
+                   <select class="form-control form-control-lg" id="mac-esclavo" required>
+                       <option value="">-- Selecciona una báscula --</option>
+                   </select>
+               </div>
+               <div class="form-group mb-3">
+                   <label for="nombre-esclavo" class="font-weight-bold text-secondary small">Nombre Asignado</label>
+                   <input type="text" class="form-control" id="nombre-esclavo" placeholder="Ej: Celda Tolva 1" maxlength="20">
+               </div>
+           </div>
+           <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal">Cancelar</button>
+               <button type="button" class="btn btn-success font-weight-bold" onclick="registrarNuevoEsclavo()">Vincular</button>
+           </div>
+       </div>
+   </div>
+</div>
+
+<script src="/assets/bootstrap.bundle.min.js"></script>
+<script src="/assets/script.js"></script>
+</body>
+</html>

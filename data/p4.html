@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Dinámico - Bootstrap 5.3</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="/assets/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Oculta los elementos por defecto si no coinciden con el rol activo */
+        [data-role] {
+            display: none !important;
+        }
+        /* Clase utilitaria para manejar la visibilidad desde JS */
+        .show-role {
+            display: block !important;
+        }
+        .show-role-flex {
+            display: flex !important;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <!-- REEMPLAZO DEL HEADER: Barra superior genérica -->
+    <div class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">MiAplicación</span>
+            
+            <!-- Selector de simulación de usuario (Solo para pruebas) -->
+            <div class="d-flex align-items-center text-white">
+                <label for="roleSelector" class="me-2 text-nowrap">Simular Usuario:</label>
+                <select id="roleSelector" class="form-select form-select-sm bg-secondary text-white border-0">
+                    <option value="comun">Usuario Común</option>
+                    <option value="admin">Administrador</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUERPO PRINCIPAL DE LA WEB -->
+    <div class="container-fluid my-4">
+        <div class="row g-4">
+            
+            <!-- REEMPLAZO DEL ASIDE: Menú Lateral Genérico -->
+            <div class="col-12 col-md-3">
+                <div class="card p-3 shadow-sm">
+                    <div class="nav flex-column nav-pills">
+                        <!-- Opción para todos -->
+                        <a class="nav-link active mb-2" href="#">Inicio</a>
+                        
+                        <!-- Opción solo para Común -->
+                        <a class="nav-link mb-2" href="#" data-role="comun">Mis Reportes</a>
+                        <a class="nav-link mb-2" href="#" data-role="comun">Soporte Técnico</a>
+                        
+                        <!-- Opciones solo para Admin -->
+                        <a class="nav-link mb-2 text-danger" href="#" data-role="admin">Gestión de Usuarios</a>
+                        <a class="nav-link mb-2 text-danger" href="#" data-role="admin">Configuración Global</a>
+                        <a class="nav-link mb-2 text-danger" href="#" data-role="admin">Logs del Sistema</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTENIDO PRINCIPAL -->
+            <div class="col-12 col-md-9">
+                <div class="card p-4 shadow-sm">
+                    
+                    <!-- Vista para Usuario Común -->
+                    <div data-role="comun">
+                        <h2 class="text-primary">Panel de Usuario Común</h2>
+                        <p class="lead">Bienvenido a tu espacio personal. Aquí puedes ver tus actividades recientes.</p>
+                        <div class="alert alert-info">Tienes 2 tareas pendientes para hoy.</div>
+                    </div>
+
+                    <!-- Vista para Administrador -->
+                    <div data-role="admin">
+                        <h2 class="text-danger">Panel de Administración</h2>
+                        <p class="lead">Consola de control total del sistema y analíticas en tiempo real.</p>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="p-3 bg-danger-subtle text-danger-emphasis rounded border border-danger-subtle">
+                                    <h5>Usuarios Activos</h5>
+                                    <p class="fs-3 fw-bold mb-0">1,240</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="p-3 bg-warning-subtle text-warning-emphasis rounded border border-warning-subtle">
+                                    <h5>Alertas del Servidor</h5>
+                                    <p class="fs-3 fw-bold mb-0">0 Críticas</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap 5.3 JS Bundle -->
+    <script src="/assets/bootstrap.bundle.min.js"></script>
+
+    <!-- Lógica de control de Roles -->
+    <script>
+        const roleSelector = document.getElementById('roleSelector');
+
+        function actualizarPantallaPorRol(rolActivo) {
+            // Buscamos todos los elementos que tengan el atributo data-role
+            const elementosConRol = document.querySelectorAll('[data-role]');
+            
+            elementosConRol.forEach(elemento => {
+                const rolRequerido = elemento.getAttribute('data-role');
+                
+                // Si el elemento coincide con el rol activo, lo mostramos
+                if (rolRequerido === rolActivo) {
+                    // Usamos flex si es un enlace de menú lateral, sino block
+                    if (elemento.tagName === 'A') {
+                        elemento.classList.add('show-role-flex');
+                    } else {
+                        elemento.classList.add('show-role');
+                    }
+                } else {
+                    // Si no coincide, nos aseguramos de ocultarlo
+                    elemento.classList.remove('show-role', 'show-role-flex');
+                }
+            });
+        }
+
+        // Escuchar el cambio del selector para simular el cambio de usuario
+        roleSelector.addEventListener('change', (e) => {
+            actualizarPantallaPorRol(e.target.value);
+        });
+
+        // Ejecución inicial con el rol por defecto del selector
+        actualizarPantallaPorRol(roleSelector.value);
+    </script>
+</body>
+</html>
