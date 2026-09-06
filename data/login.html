@@ -16,35 +16,34 @@
 			<h4 class="font-weight-bold text-secondary">Acceso de Seguridad</h4>
 			<p class="text-muted small">Por favor ingresa las credenciales de Administrador</p>
 		</div>
-		<form id="form-login" onsubmit="procesarLogin(event)">
+        <!-- Eliminamos onsubmit y agregamos action y method -->
+		<form id="form-login" action="/login" method="POST">
 			<div class="form-group mb-3">
 				<label class="small font-weight-bold text-muted">Usuario</label>
-				<input type="text" id="user" class="form-control form-control-lg" required autocomplete="username">
+				<!-- Es obligatorio agregar el atributo 'name' para que el ESP32 pueda leerlo -->
+				<input type="text" id="user" name="usuario" class="form-control form-control-lg" required autocomplete="username">
 			</div>
 			<div class="form-group mb-4">
 				<label class="small font-weight-bold text-muted">Contraseña</label>
-				<input type="password" id="pass" class="form-control form-control-lg" required autocomplete="current-password">
+				<!-- Es obligatorio agregar el atributo 'name' para que el ESP32 pueda leerlo -->
+				<input type="password" id="pass" name="contrasena" class="form-control form-control-lg" required autocomplete="current-password">
 			</div>
+			
+			<!-- Script modificado para capturar si el ESP32 nos devuelve un error -->
 			<div id="alert-error" class="alert alert-danger small p-2" style="display: none;">Credenciales incorrectas</div>
+			
 			<button type="submit" class="btn btn-primary btn-block font-weight-bold w-100 py-2">Iniciar Sesión</button>
 			<a href="/index.html" class="btn btn-link btn-block w-100 text-muted small mt-2">Volver al Panel</a>
 		</form>
 	</div>
 
 	<script>
-		function procesarLogin(e) {
-			e.preventDefault();
-			const u = document.getElementById('user').value;
-			const p = document.getElementById('pass').value;
-			
- // Valores hardcodeados por defecto (puedes cambiarlos aquí o acoplarlos a un API del ESP32)
-			if(u === "admin" && p === "1234") {
-				localStorage.setItem("bascula_is_admin", "true");
-				window.location.href = "/index.html";
-			} else {
-				document.getElementById('alert-error').style.display = "block";
-			}
+		// Este pequeño script solo sirve para mostrar el mensaje de error si el ESP32 te rebota
+		const urlParams = new URLSearchParams(window.location.search);
+		if (urlParams.get('error') === '1') {
+			document.getElementById('alert-error').style.display = "block";
 		}
 	</script>
 </body>
 </html>
+

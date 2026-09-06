@@ -125,6 +125,7 @@ void loop() {
         // Cada 5 segundos evaluamos si el peso local varió
         static unsigned long timerChequeoEco = 0;
         if (millis() - timerChequeoEco > 5000) {
+            Serial.println("activo");
             timerChequeoEco = millis();
             
             // Si el peso varió más de 50 gramos, reiniciamos el temporizador de inactividad
@@ -171,6 +172,7 @@ void loop() {
 
     
     else if (millis() - ultimoEnvioCelda > tiempoEntreEnviosEsclavo) {
+        Serial.println("activo");
         ultimoEnvioCelda = millis();
         enviarPeso(pesoActual);
 

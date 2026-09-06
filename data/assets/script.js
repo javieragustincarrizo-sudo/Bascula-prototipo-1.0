@@ -51,7 +51,10 @@ function inicializarDashboard() {
     const indicadorRol = document.getElementById("indicador-rol");
     const panelMaestro = document.getElementById("panel-maestro-esclavos");
     
-    // Capturamos de forma segura la columna contenedora de Bootstrap que envuelve al Estado General
+    // Capturamos los nuevos IDs que agregamos al HTML
+    const tituloPeso = document.getElementById("titulo-peso-local");
+    const infoSubtexto = document.getElementById("info-subtexto");
+    
     const pesoTotalRedEl = document.getElementById("peso-total-red");
     const sectorEstadoGeneral = pesoTotalRedEl ? pesoTotalRedEl.closest('.col-lg-4') : null;
 
@@ -61,7 +64,8 @@ function inicializarDashboard() {
             indicadorRol.innerText = "Modo: Maestro (Concentrador)";
             indicadorRol.className = "badge badge-primary p-2";
         }
-        // Desocultamos las secciones de forma segura con el dato certero del chip
+        if (tituloPeso) tituloPeso.innerText = "PESO TOTAL DE LA RED";
+        if (infoSubtexto) infoSubtexto.style.display = "block";
         if (panelMaestro) panelMaestro.style.display = "block";
         if (sectorEstadoGeneral) sectorEstadoGeneral.style.display = "block"; 
         
@@ -72,14 +76,14 @@ function inicializarDashboard() {
             indicadorRol.innerText = "Modo: Independiente / Esclavo";
             indicadorRol.className = "badge badge-secondary p-2";
         }
-        // Nos aseguramos de mantenerlos ocultos de forma rígida
+        if (tituloPeso) tituloPeso.innerText = "PESO INDIVIDUAL BÁSCULA";
+        if (infoSubtexto) infoSubtexto.style.display = "none"; // Oculta el contador de esclavos
         if (panelMaestro) panelMaestro.style.display = "none";
         if (sectorEstadoGeneral) sectorEstadoGeneral.style.display = "none"; 
-        
-        const metricCount = document.getElementById("total-dispositivos");
-        if (metricCount) metricCount.innerText = "1";
     }
 }
+
+
 
 // --- RENDERIZADO DE TARJETAS DE ESCLAVOS ---
 function renderizarEsclavos() {
@@ -396,6 +400,7 @@ function iniciarMonitoreoDatos() {
 
                 // 2. Actualizar Interfaz de Red Física (Tus 4 barras HTML)
                 actualizarBarrasWifi(data.rssi);
+                dispositivoEsMaster = data.es_maestro; // Sincronizamos la variable global con el estado real del ESP32
 
                 // 3. Actualizar Widget de Batería 18650
                 actualizarWidgetBateria(data.bat_porcentaje);
@@ -1095,6 +1100,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 1. Encendemos el bucle de telemetría en tiempo real (Para el Header de cualquier página)
     iniciarMonitoreoDatos();
+    
 
     // 2. Si existe el switchModo, sabemos con certeza que el usuario está en configuracion.html
     if (switchModo) {

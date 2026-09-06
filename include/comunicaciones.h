@@ -85,6 +85,8 @@ extern float pesoActual;
 
 
 // Declaración de Funciones del Sistema
+bool estaAutenticado(AsyncWebServerRequest *request);
+void cargarEsclavosDesdeFlash();
 void cargarConfiguracion();
 //void guardarConfiguracion(bool esMaster, String tipoRed, String ssid, String pass,String config_nombreDisp);
 void inicializarRedYComunicaciones();

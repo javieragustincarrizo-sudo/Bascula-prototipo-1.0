@@ -9,68 +9,53 @@
     <link rel="icon" type="image/x-icon" href="/assets/balanza.png">
 </head>
 <body>
+   <!-- Menú Lateral (Sidebar) -->
+   <div class="sidebar">
+       <nav class="nav flex-column">
+           <a href="/index.html" class="nav-link active"><i class="bi bi-speedometer2"></i> Bascula</a>
+           <a href="/configuracion.html" class="nav-link"><i class="bi bi-wifi"></i> Configuración</a>
+       </nav>
+   </div>
 
-    <!-- Menú Lateral (Sidebar) -->
-    <aside class="sidebar">
-        <nav class="nav flex-column">
-            <a href="/index.html" class="nav-link"><i class="bi bi-speedometer2"></i> Báscula</a>
-            <a href="/configuracion.html" class="nav-link active"><i class="bi bi-wifi"></i> Configuración</a>
-        </nav>
-    </aside>
-
-    <!-- Barra Superior -->
-    <header class="top-info-bar shadow-sm">
-      <div class="container-fluid">
-        <div class="row w-100 align-items-center m-0 py-2">
-          
-            <!-- Columna Izquierda: Espacio libre o Titulo corto si lo deseas (Ocupa la mitad del ancho) -->
-            <div class="col-4 col-md-6 p-0">
-               <!-- Puedes dejarlo vacío o agregar un logo/texto corto aquí -->
-            </div>
-          
-            <!-- Columna Derecha: Bloque Unificado de Información en el Header (Actualizado) -->
-            <div class="col-8 col-md-6 p-0 d-flex justify-content-end align-items-center gap-3">
-                  
-                  <!-- 1. Modo del Equipo e Info de Red Coherente -->
-                  <div class="d-flex flex-column text-right mr-3 small font-weight-bold" style="line-height: 1.2;">
-                      <div>Modo: <span id="modo" class="text-primary">--</span></div>
-                      <div id="info-red-header" class="text-muted" style="font-size: 0.75rem;">
-                        Conectado a: <span id="red-nombre">--</span>
-                        <span id="ip-header" class="font-family-monospace text-primary">0.0.0.0</span>
-                      </div>
-                  </div>
-
-                  <!-- 2. Widget de Batería Estilo OLED -->
-                  <div class="d-flex align-items-center mr-3" id="bateria-widget" title="Batería del dispositivo">
-                      <span id="bateria-porcentaje" class="small font-weight-bold">--%</span>
-                        <div id="bateria-icono" class="ml-1 position-relative d-flex align-items-center" style="width: 25px; height: 14px; border: 1.5px solid #6c757d; border-radius: 2px; padding: 1px; gap: 1px;">
-                            <div id="bat-bar-1" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
-                            <div id="bat-bar-2" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
-                            <div id="bat-bar-3" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
-                            <div id="bat-bar-4" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
-                            <div id="bat-bar-5" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
-                            <!-- Pestaña física externa de la pila -->
-                            <div style="position: absolute; right: -3px; top: 3px; width: 1.5px; height: 5px; background: #6c757d; border-radius: 0 1px 1px 0;"></div>
-                        </div>
-                  </div>
-
-                  <!-- 3. Widgets de Señal de 4 barras -->
-                  <div class="signal-widget d-flex align-items-center mr-3" title="Intensidad de Señal Wi-Fi">
-                      <div id="signal-bars" class="signal-bars mr-2">
-                          <div id="wifi-bar-1" class="bar bar-1"></div>
-                          <div id="wifi-bar-2" class="bar bar-2"></div>
-                          <div id="wifi-bar-3" class="bar bar-3"></div>
-                          <div id="wifi-bar-4" class="bar bar-4"></div>
-                      </div>
-                      <span id="wifi-texto-rssi" class="label small font-weight-bold text-muted">Señal</span>
-                  </div>
-                  
-                  <!-- 4. Estado del Sistema -->
-                  <span id="sistema" class="badge rounded-pill bg-secondary px-3 py-2">Estado</span>
-            </div>
-        </div>
-      </div>
-    </header>
+   <!-- Barra Superior -->
+   <div class="top-info-bar shadow-sm p-2">
+       <div class="container-fluid">
+           <div class="row align-items-center m-0">
+               <div class="col-12 col-md-6 p-0 d-flex justify-content-center justify-content-md-end align-items-center gap-2 flex-wrap">
+                   <!-- Modo e Info de Red -->
+                   <div class="d-flex flex-column text-right mr-3 small font-weight-bold" style="line-height: 1.2;">
+                       <div>Modo: <span id="modo" class="text-primary">Maestro</span></div>
+                       <div id="info-red-header" class="text-muted" style="font-size: 0.75rem;">
+                           Conectado a: <span id="red-nombre">--</span> (<span id="ip-header" class="font-family-monospace text-primary">0.0.0.0</span>)
+                       </div>
+                   </div>
+                   <!-- Widget de Batería -->
+                   <div class="d-flex align-items-center mr-3" id="bateria-widget" title="Batería del dispositivo">
+                       <span id="bateria-porcentaje" class="small font-weight-bold">--%</span>
+                       <div id="bateria-icono" class="ml-1 position-relative d-flex align-items-center" style="width: 25px; height: 14px; border: 1.5px solid #6c757d; border-radius: 2px; padding: 1px; gap: 1px;">
+                           <div id="bat-bar-1" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
+                           <div id="bat-bar-2" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
+                           <div id="bat-bar-3" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
+                           <div id="bat-bar-4" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
+                           <div id="bat-bar-5" style="width: 3px; height: 100%; background: #dee2e6; transition: background 0.2s;"></div>
+                           <div style="position: absolute; right: -3px; top: 3px; width: 1.5px; height: 5px; background: #6c757d; border-radius: 0 1px 1px 0;"></div>
+                       </div>
+                   </div>
+                   <!-- Widget de Señal Wi-Fi -->
+                   <div class="signal-widget d-flex align-items-center mr-3" title="Intensidad de Señal Wi-Fi">
+                       <div id="signal-bars" class="signal-bars mr-2">
+                           <div id="wifi-bar-1" class="bar bar-1"></div>
+                           <div id="wifi-bar-2" class="bar bar-2"></div>
+                           <div id="wifi-bar-3" class="bar bar-3"></div>
+                           <div id="wifi-bar-4" class="bar bar-4"></div>
+                       </div>
+                       <span id="wifi-texto-rssi" class="label small font-weight-bold text-muted">Señal</span>
+                   </div>
+                   <span id="sistema" class="badge rounded-pill bg-secondary px-3 py-2">Estado</span>
+               </div>
+           </div>
+       </div>
+    </div>
 
     <!-- Contenido Principal dentro de configuracion.html -->
     <main class="main-content">

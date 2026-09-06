@@ -61,6 +61,26 @@ bool tieneMaestroFijo = false;
 MaestroDescubierto listaMaestrosAire[MAX_MAESTROS_AIRE];
 int totalMaestrosAire = 0;
 
+
+// Credenciales de acceso
+const char* mi_usuario = "admin";
+const char* mi_contrasena = "1234";
+
+// Una clave secreta para tu sesión (puedes cambiarla por lo que quieras)
+const char* cookie_sesion = "ESPSESSIONID=MiTokenSecreto123";
+
+// Función auxiliar para comprobar si el usuario ya está logueado
+bool estaAutenticado(AsyncWebServerRequest *request) {
+    if (request->hasHeader("Cookie")) {
+        const AsyncWebHeader* cookie = request->getHeader("Cookie");
+        // Verifica si la cookie del navegador coincide con nuestro token secreto
+        if (cookie->value().indexOf(cookie_sesion) != -1) {
+            return true;
+        }
+    }
+    return false;
+}
+
 // Carga los ajustes desde la memoria Flash NVS al arrancar
 void cargarConfiguracion() { 
     prefs.begin("balanza_cfg", true); 
@@ -771,7 +791,17 @@ void inicializarServidorWeb() {
     });
 
     // Servir archivos estáticos desde LittleFS (HTML, CSS, JS)
-    server.serveStatic("/", LittleFS, "/").setDefaultFile("index.html");
+    //server.serveStatic("/", LittleFS, "/").setDefaultFile("index.html");
+    // 1. Archivos base individuales y públicos
+    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+        request->send(LittleFS, "/index.html", "text/html");
+    });
+    server.on("/index.html", HTTP_GET, [](AsyncWebServerRequest *request){
+        request->send(LittleFS, "/index.html", "text/html");
+    });
+    server.on("/login.html", HTTP_GET, [](AsyncWebServerRequest *request){
+        request->send(LittleFS, "/login.html", "text/html");
+    });
 
     server.serveStatic("/assets/bootstrap.min.css", LittleFS, "/assets/bootstrap.min.css");
     server.serveStatic("/assets/style.css", LittleFS, "/assets/style.css");
@@ -960,6 +990,48 @@ void inicializarServidorWeb() {
         } else {
             request->send(400, "text/plain", "MAC Inválida");
         }
+    });
+
+    // 2. PÁGINA DE LOGIN (Mostrar el formulario)
+    server.on("/login.html", HTTP_GET, [](AsyncWebServerRequest *request){
+        request->send(LittleFS, "/login.html", "text/html");
+    });
+
+    server.on("/login", HTTP_POST, [](AsyncWebServerRequest *request){
+        String usuario = "";
+        String contrasena = "";
+
+        if(request->hasArg("usuario"))   usuario = request->arg("usuario");
+        if(request->hasArg("contrasena")) contrasena = request->arg("contrasena");
+
+        if(usuario == mi_usuario && contrasena == mi_contrasena) {
+            Serial.println("¡Credenciales correctas! Enviando respuesta unificada...");
+            
+            // Creamos la respuesta con estado 302 (Redirección)
+            AsyncWebServerResponse *response = request->beginResponse(302, "text/plain", "");
+            
+            // Agregamos las dos cabeceras juntas de forma segura
+            response->addHeader("Set-Cookie", cookie_sesion);
+            response->addHeader("Location", "/configuracion.html");
+            
+            // Enviamos todo en un solo paquete. El navegador guardará la cookie e irá a configuración.
+            request->send(response);
+        } else {
+            Serial.println("Credenciales incorrectas. Redirigiendo a login con error.");
+            request->redirect("/login.html?error=1"); 
+        }
+    });
+
+
+    // 4. PÁGINA DE CONFIGURACIÓN (Protegida)
+    server.on("/configuracion.html", HTTP_GET, [](AsyncWebServerRequest *request){
+        if(!estaAutenticado(request)) {
+            // Si no está autenticado, lo echamos al login
+            request->redirect("/login.html");
+            return;
+        }
+        // Si está autenticado, le servimos su página de configuración
+        request->send(LittleFS, "/configuracion.html", "text/html");
     });
 
 

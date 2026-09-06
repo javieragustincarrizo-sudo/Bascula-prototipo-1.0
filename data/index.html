@@ -10,19 +10,18 @@
 </head>
 <body>
    <!-- Menú Lateral (Sidebar) -->
-   <aside class="sidebar">
+   <div class="sidebar">
        <nav class="nav flex-column">
-           <a href="/index.html" class="nav-link active"><i class="bi bi-speedometer2"></i> Panel</a>
-           <a href="/configuracion.html" onclick="verificarAccesoConfig()" class="nav-link"><i class="bi bi-wifi"></i> Configuración</a>
+           <a href="/index.html" class="nav-link active"><i class="bi bi-speedometer2"></i> Bascula</a>
+           <a href="/configuracion.html" class="nav-link"><i class="bi bi-wifi"></i> Configuración</a>
        </nav>
-   </aside>
+   </div>
 
    <!-- Barra Superior -->
-   <header class="top-info-bar shadow-sm">
+   <div class="top-info-bar shadow-sm p-2">
        <div class="container-fluid">
-           <div class="row w-100 align-items-center m-0 py-2">
-               <div class="col-4 col-md-6 p-1"></div>
-               <div class="col-8 col-md-6 p-0 d-flex justify-content-end align-items-center gap-3">
+           <div class="row align-items-center m-0">
+               <div class="col-12 col-md-6 p-0 d-flex justify-content-center justify-content-md-end align-items-center gap-2 flex-wrap">
                    <!-- Modo e Info de Red -->
                    <div class="d-flex flex-column text-right mr-3 small font-weight-bold" style="line-height: 1.2;">
                        <div>Modo: <span id="modo" class="text-primary">Maestro</span></div>
@@ -56,12 +55,12 @@
                </div>
            </div>
        </div>
-   </header>
+    </div>
 
    <!-- Contenido Principal -->
    <main class="main-content">
        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-           <h1 class="h2">Monitoreo de Red de Pesaje</h1>
+           <h1 class="h2">Monitoreo de Pesaje</h1>
            <span class="badge badge-secondary p-2" id="indicador-rol">Rol: Cargando...</span>
        </div>
 
@@ -70,12 +69,14 @@
            <div class="col-12 mb-4">
                <div class="card bg-white p-4 shadow-sm">
                    <div class="row align-items-center">
-                       <div class="col-md-6 text-center text-md-left">
-                           <h5 class="text-muted text-uppercase font-weight-bold m-0">PESO TOTAL DE LA RED</h5>
+                       <div class="col-md-6 text-center text-md-left" >
+                           <h5 class="text-muted text-uppercase font-weight-bold m-0" id="titulo-peso-local">PESO TOTAL DE LA RED</h5>
                            <div class="medicion-val my-2" style="font-size: 5rem; font-weight: 800; color: #dc3545;">
                                <span id="peso-total-red">0.00</span> <small class="text-muted" style="font-size: 2rem;">kg</small>
                            </div>
-                           <small class="text-muted">Básculas activas en red: <span id="total-dispositivos" class="font-weight-bold text-dark">1</span></small>
+                            <small class="text-muted" id="info-subtexto">Básculas activas en red: <span id="total-dispositivos" class="font-weight-bold text-dark">1</span></small>
+                           
+                           
                        </div>
                        <!-- Botonera Industrial para el Operario Final -->
                        <div class="col-md-6 mt-3 mt-md-0">

@@ -1,0 +1,30 @@
+{
+  "peso_local": 0.00,
+  "log1": "texto_log1",
+  "log2": "texto_log2",
+  "log3": "texto_log3",
+  "rssi": -65,
+  "bat_porcentaje": 85,
+  "mac_local": "AA:BB:CC:DD:EE:FF",
+  "modo_eco": true,
+  "wifi_ssid": "MiRedWiFi",
+  "maestro_asociado": "--",
+  "nombre_local": "DD",
+  "ip_local": "192.168.1.50",
+  "es_maestro": true,
+  "esclavos": [
+    {
+      "mac": "11:22:33:44:55:66",
+      "nombre": "Esclavo_1",
+      "peso": 12.34,
+      "bateria": 90,
+      "rssi": -70,
+      "ip": "192.168.1.51",
+      "ms_desde_actualizacion": 1500
+    }
+  ],
+  "descubiertos": [
+    "AA:11:BB:22:CC:33",
+    "DD:44:EE:55:FF:66"
+  ]
+}
